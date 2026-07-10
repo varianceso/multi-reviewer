@@ -1,0 +1,54 @@
+{
+  "name": "multi-reviewer",
+  "version": "1.0.0",
+  "description": "Multi-agent CROSS-VALIDATION protocol for already-drafted plans and already-written code. Does NOT generate plans or code itself; use superpowers for drafting, designing, and coding, then return here for review.",
+  "author": {
+    "name": "varianceso",
+    "email": "15603454+varianceso@users.noreply.github.com"
+  },
+  "homepage": "https://github.com/varianceso/multi-reviewer",
+  "repository": "https://github.com/varianceso/multi-reviewer",
+  "license": "MIT",
+  "keywords": [
+    "mrcc",
+    "multi-reviewer",
+    "multi-agent",
+    "n-reviewer",
+    "cross-validation",
+    "double-blind",
+    "multi-repo",
+    "code-review",
+    "qa-regression",
+    "product-plan-review",
+    "tech-plan-review",
+    "test-plan-review",
+    "rollout-plan-review",
+    "main-agent-coding-exclusive",
+    "sync-checklist",
+    "finding-evidence",
+    "b1-dismiss-sop",
+    "codex",
+    "opencode",
+    "cursor",
+    "cline",
+    "ai-coding-workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Multi Reviewer",
+    "shortDescription": "Cross-validate plans and code with independent reviewers.",
+    "longDescription": "A review-only workflow for already-drafted product, technical, test, and rollout plans, plus post-coding QA regression. It coordinates one main implementer and N independent reviewers, enforces double-blind review discipline, and keeps coding ownership with the main agent.",
+    "developerName": "varianceso",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Review"
+    ],
+    "websiteURL": "https://github.com/varianceso/multi-reviewer",
+    "defaultPrompt": [
+      "Use mrcc to review this finalized plan.",
+      "Use mrcc to run QA regression on these changes."
+    ],
+    "brandColor": "#10A37F"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "multi-reviewer-marketplace",
+  "interface": {
+    "displayName": "Multi Reviewer"
+  },
+  "plugins": [
+    {
+      "name": "multi-reviewer",
+      "source": {
+        "source": "local",
+        "path": "./plugins/multi-reviewer"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

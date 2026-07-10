@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "multi-reviewer",
+  "displayName": "Multi Reviewer",
+  "description": "Multi-agent CROSS-VALIDATION protocol for already-drafted plans / already-written code. **Does NOT generate plans or code itself** — for drafting/designing/coding, use superpowers:brainstorming + writing-plans + test-driven-development first, then return here for review. Orchestrates 1 main implementer + N independent reviewers (default 2, configurable 1-26 via init.mjs). Five entry modes (interactive): product-plan / tech-plan / test-plan / rollout-plan review + post-coding QA regression. N-way double-blind with strict-majority consensus; single-reviewer exception for product-plan review. All outputs primary-repo only. Bootstraps .claude/rules/, enforces archive + double-blind + main-agent-coding-exclusive protocol.",
+  "version": "1.0.0",
+  "author": {
+    "name": "varianceso",
+    "email": "15603454+varianceso@users.noreply.github.com"
+  },
+  "homepage": "https://github.com/varianceso/multi-reviewer",
+  "repository": "https://github.com/varianceso/multi-reviewer.git",
+  "license": "MIT",
+  "keywords": [
+    "mrcc",
+    "multi-reviewer",
+    "multi-agent",
+    "n-reviewer",
+    "cross-validation",
+    "double-blind",
+    "multi-repo",
+    "code-review",
+    "qa-regression",
+    "product-plan-review",
+    "tech-plan-review",
+    "test-plan-review",
+    "rollout-plan-review",
+    "main-agent-coding-exclusive",
+    "sync-checklist",
+    "finding-evidence",
+    "b1-dismiss-sop",
+    "codex",
+    "opencode",
+    "cursor",
+    "cline",
+    "ai-coding-workflow"
+  ]
+}

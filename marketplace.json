@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "multi-reviewer-marketplace",
+  "description": "Single-plugin marketplace for multi-reviewer — multi-agent cross-validation protocol (review-only, not for plan/code generation) with N reviewers (default 2, configurable 1-26) and multi-repo synchronization.",
+  "owner": {
+    "name": "varianceso",
+    "email": "15603454+varianceso@users.noreply.github.com"
+  },
+  "plugins": [
+    {
+      "name": "multi-reviewer",
+      "description": "Multi-agent CROSS-VALIDATION protocol — review-only, NOT for plan/code generation. Use superpowers (brainstorming/writing-plans/TDD) to draft, then return here. 1 main implementer (编码独占) + N reviewers (default 2, configurable 1-26 via init.mjs). Five entry modes (B1-B4 plan review + A QA regression), N-way double-blind, B1 single-reviewer exception, multi-repo single-source prompt. Bootstraps .claude/rules/, enforces archive + double-blind + main-agent-coding-exclusive protocol.",
+      "author": {
+        "name": "varianceso",
+        "email": "15603454+varianceso@users.noreply.github.com"
+      },
+      "category": "development",
+      "source": ".",
+      "homepage": "https://github.com/varianceso/multi-reviewer"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-marketplace.json",
+  "name": "multi-reviewer-marketplace",
+  "description": "Single-plugin marketplace for multi-reviewer — multi-agent CROSS-VALIDATION protocol (review-only, NOT for plan/code generation; use superpowers for that)",
+  "owner": {
+    "name": "varianceso",
+    "email": "15603454+varianceso@users.noreply.github.com",
+    "url": "https://github.com/varianceso"
+  },
+  "plugins": [
+    {
+      "name": "multi-reviewer",
+      "source": "./",
+      "description": "Multi-agent CROSS-VALIDATION protocol for already-drafted plans / already-written code. Does NOT generate plans or code — use superpowers (brainstorming/writing-plans/TDD) for that, then return here for review. 1 main implementer + N independent reviewers (default 2). Five entry modes: product / tech / test / rollout plan review + post-coding QA regression, with N-way double-blind, B1 single-reviewer exception for product plans, multi-repo single-source prompt.",
+      "version": "1.0.0",
+      "category": "code-review",
+      "tags": [
+        "multi-agent",
+        "cross-validation",
+        "double-blind",
+        "code-review",
+        "qa-regression",
+        "plan-review",
+        "multi-repo"
+      ]
+    }
+  ]
+}

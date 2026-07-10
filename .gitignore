@@ -1,0 +1,32 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Node (init.mjs only uses built-ins, but keep this hygiene for future evolution)
+node_modules/
+*.log
+npm-debug.log*
+
+# Local scratch areas (when the skill repo uses tri-agent-coding meta-recursively for self-review)
+# Per archive-and-blind.md §8 — case-studies / prompts / reports are project-local, NOT skill assets.
+# .claude-plugin/ (skill metadata) is a different name and is NOT matched by .claude/ rule.
+# NOTE: gitignore does NOT support inline `#` comments — keep comments on their own lines.
+.claude/
+
+# default reviewer agents
+.codex/
+.opencode/
+
+# optional reviewer agents (configured via init.mjs --reviewer-c/d/...)
+.cursor/
+.cline/
+.qoder/
+.aider/
+reports/
+.zcode/
+.trae/
+.windsurf/
+.superpowers/
