@@ -27,10 +27,12 @@ const expectedReferences = [
   "cross-validation.md",
   "filling-prompts.md",
   "hard-constraints.md",
+  "java-backend-standard.md",
   "multi-repo.md",
   "multi-round-regression.md",
   "plan-review-perspectives.md",
   "report-format.md",
+  "reviewer-workmode.md",
 ];
 
 const jsonFiles = [
@@ -126,6 +128,8 @@ const multiRepo = read("skills/multi-reviewer/references/multi-repo.md");
 const reportFormat = read("skills/multi-reviewer/references/report-format.md");
 const planPerspectives = read("skills/multi-reviewer/references/plan-review-perspectives.md");
 const crossVal = read("skills/multi-reviewer/references/cross-validation.md");
+const workmode = read("skills/multi-reviewer/references/reviewer-workmode.md");
+const javaStandard = read("skills/multi-reviewer/references/java-backend-standard.md");
 const marketplaceInner = JSON.parse(read(".claude-plugin/marketplace.json"));
 const marketplaceOuter = JSON.parse(read("marketplace.json"));
 const codexMarketplace = JSON.parse(read(".agents/plugins/marketplace.json"));
@@ -141,7 +145,7 @@ addCheck("Codex install source mirrors root manifest and skills",
   fileExists("plugins/multi-reviewer/skills/multi-reviewer/SKILL.md") &&
   fileExists("plugins/multi-reviewer/skills/mrcc/SKILL.md"));
 
-// v1.9 — comprehensive mirror integrity check (all 24 skill files)
+// v1.9+ — comprehensive mirror integrity check (all expected skill files)
 const mirrorSkillFiles = [
   "skills/mrcc/SKILL.md",
   "skills/multi-reviewer/SKILL.md",
@@ -161,9 +165,9 @@ const mirrorOk = mirrorResults.every((r) => r.exists && r.identical);
 if (!mirrorOk) {
   const failures = mirrorResults.filter((r) => !r.exists || !r.identical)
     .map((r) => `${r.source} -> ${r.mirror}`).join(", ");
-  addCheck("all 24 skill files mirrored byte-identical (skills/ vs plugins/)", false, `failures: ${failures}`);
+  addCheck("all expected skill files mirrored byte-identical (skills/ vs plugins/)", false, `failures: ${failures}`);
 } else {
-  addCheck("all 24 skill files mirrored byte-identical (skills/ vs plugins/)", true);
+  addCheck("all expected skill files mirrored byte-identical (skills/ vs plugins/)", true);
 }
 addCheck("multi-reviewer rename and mrcc alias are documented", plugin.name === "multi-reviewer" && codexPlugin.name === "multi-reviewer" && readme.includes("短别名:**mrcc**") && skill.includes("Alias: mrcc"));
 addCheck("mrcc alias skill exists and delegates to multi-reviewer",
@@ -236,6 +240,30 @@ addCheck("SKILL slug-entry checklist updated for v1.9",
 // v1.6.1 — hard-constraints includes §8 reviewer-not-read-slug-dir (added in v1.6.1)
 addCheck("hard-constraints includes <slug>/ readonly clause",
   read("skills/multi-reviewer/references/hard-constraints.md").includes("<slug>"));
+
+addCheck("shared reviewer work mode is synchronized",
+  workmode.includes("mico") && workmode.includes("zcode") &&
+  workmode.includes("2 次") && workmode.includes("5") && workmode.includes("200 字"));
+addCheck("Java standard contains mandatory layer boundaries",
+  javaStandard.includes("API") && javaStandard.includes("Application") &&
+  javaStandard.includes("Domain") && javaStandard.includes("Infra") &&
+  javaStandard.includes("Repository") && javaStandard.includes("Common"));
+addCheck("review templates reference shared work mode",
+  [productPrompt, techPrompt, testPlanPrompt, rolloutPrompt, qaPrompt]
+    .every((text) => text.includes("reviewer-workmode.md")));
+addCheck("Java-aware templates reference Java standard",
+  [techPrompt, testPlanPrompt, qaPrompt]
+    .every((text) => text.includes("java-backend-standard.md")) &&
+  !productPrompt.includes("java-backend-standard.md") &&
+  !rolloutPrompt.includes("java-backend-standard.md"));
+addCheck("allowlist policy is present in test and QA prompts",
+  [testPlanPrompt, qaPrompt].every((text) =>
+    text.includes("验证白名单") && text.includes("基线债") &&
+    (text.includes("不得扩大") || text.includes("禁止扩大"))));
+addCheck("review-only boundary remains intact",
+  skill.includes("不新增 Coder") &&
+  plugin.description.includes("Does NOT generate") &&
+  codexPlugin.description.includes("Does NOT generate"));
 
 for (const { name, pass, details } of checks) {
   if (pass) {

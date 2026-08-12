@@ -1,7 +1,7 @@
 {
   "name": "multi-reviewer",
-  "version": "1.0.0",
-  "description": "Multi-agent CROSS-VALIDATION protocol for already-drafted plans and already-written code. Does NOT generate plans or code itself; use superpowers for drafting, designing, and coding, then return here for review.",
+  "version": "1.10.0",
+  "description": "Multi-agent CROSS-VALIDATION protocol for already-drafted plans and already-written code. Does NOT generate plans or code itself; use superpowers for drafting, designing, and coding, then return here for review. Includes shared reviewer work-mode controls and conditional Java backend checks.",
   "author": {
     "name": "varianceso",
     "email": "15603454+varianceso@users.noreply.github.com"

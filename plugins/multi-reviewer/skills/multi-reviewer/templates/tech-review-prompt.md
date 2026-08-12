@@ -105,6 +105,14 @@
 6. **包路径合规性**:方案声称"对齐现有命名习惯"时,验证现有代码命名,标出任何偏差
 7. **避免无据猜测**:不能验证的项目应明确标 "🟡 未核实" 而不是断言
 
+## Java 后端适用性门
+
+如果评估对象命中 `.java` 文件、Maven `pom.xml`、Gradle Java 插件/模块、Java
+源码包路径，或任务明确声明为 Java 后端，必须完整读取并应用
+`<skill-path>/references/java-backend-standard.md`。重点核查 API/Application/
+Domain/Infra/Repository/Common 分层、模型命名、参数封装、SQL/事务和异常映射。
+若无法确认是否适用，报告 `NOTE: Java 规范适用性未确认`，不得用 Java-only 规则直接阻塞。
+
 ## 必须覆盖的评估维度
 
 {{逐项列出本次方案的关键变更或维度,要求评审人逐项打分(🟢 通过 / 🟡 有条件通过 / 🔴 阻塞)+ 给出依据/反例/补充建议。
@@ -174,6 +182,9 @@
 详见 `<skill-path>/references/cross-validation.md` 的"双盲原则"。
 
 ## 硬约束
+
+所有 reviewer 还必须遵守 `<skill-path>/references/reviewer-workmode.md`，包括双盲派发、
+证据要求、断流兜底、commit 节奏和不扩大验证边界。
 
 详见 `<skill-path>/references/hard-constraints.md`。7 条铁律任一违反 = BLOCKER,必须在报告头部说明。
 

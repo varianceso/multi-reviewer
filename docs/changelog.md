@@ -5,6 +5,19 @@ All notable changes to **multi-reviewer** are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.0] - 2026-08-12
+
+### Added
+
+- **reviewer 工作模式 reference**:`reviewer-workmode.md` 原生纳入 reviewer 角色映射、精简派发、验证白名单、基线债阻断、Codex 最多两次重试后切 zcode、mico reviewer、≤5 commit 和 ≤200 字标准化总结。
+- **Java 后端条件核查**:`java-backend-standard.md` 纳入 hrod-plus Java 命名、分层、事务、异常、SQL、日志和格式规则；B2/B3/A 在确认 Java 后端范围时加载。
+
+### Changed
+
+- 五份 reviewer prompt 同步引用通用工作模式；B2/B3/A 增加 Java 适用性门，B3/A 增加验证白名单与基线债阻断纪律。
+- 保持 review-only 边界、五种入口、双盲与主仓产出规则不变；`init.mjs` 不新增 Coder 配置，现有业务仓无需迁移。
+- 已同步 `skills/` 与 `plugins/multi-reviewer/skills/` 镜像及一致性检查锚点。
+
 ## [1.<REDACTED>0] - 2026-06-26
 
 ### Changed
@@ -16,7 +29,7 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Changed
 
 - **slug 目录范围扩展**:`archive-and-blind.md` §2.5 扩展 slug 根目录可放文件类型:规划文档(PRD / 技术方案 / coder-task / DDL)放 `<slug>/` 根目录,迭代产物(review prompt / coder-result / case-studies)放 `<slug>/<YYYY-MM-DD>/`。新增文件分类规则表、判断口诀、主 agent 产物落盘流程。来源:625-org-standard-management 实战中 PRD / tech-design 跨日期目录散落不便查找。
-- **加固 mirror 完整性**:`check-consistency.mjs` 新增全面镜像校验,覆盖全部 24 个 skill 文件(`skills/` 与 `plugins/multi-reviewer/skills/` 间字节一致)。此前仅 5 个文件有镜像校验,19 个 reference + template 文件可能无声漂移。
+- **加固 mirror 完整性**:`check-consistency.mjs` 新增全面镜像校验,覆盖全部受检 skill 文件(`skills/` 与 `plugins/multi-reviewer/skills/` 间字节一致)。此前仅 5 个文件有镜像校验,其余 reference + template 文件可能无声漂移。
 
 ### Migration
 

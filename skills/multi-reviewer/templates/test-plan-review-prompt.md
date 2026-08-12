@@ -103,6 +103,21 @@
 5. **数据准备的可重复性**:造数 / 脱敏数据的来源、清理、隔离策略要明确
 6. **避免无据猜测**:不能验证的项目应明确标 "🟡 未核实" 而非断言
 
+## Java 后端适用性门
+
+如果测试方案覆盖 `.java` 文件、Maven `pom.xml`、Gradle Java 插件/模块、Java
+源码包路径，或任务明确声明为 Java 后端，必须完整读取并应用
+`<skill-path>/references/java-backend-standard.md`。核查测试是否覆盖分层边界、参数/分页、
+事务、异常映射、SQL 和日志脱敏。若无法确认适用，报告
+`NOTE: Java 规范适用性未确认`，不得用 Java-only 规则直接阻塞。
+
+## 验证白名单与基线债
+
+测试执行只能运行本 prompt 明列的验证白名单；Maven 任务使用
+`-pl <受影响模块> -am`，多个测试类用逗号分隔的 `-Dtest=ClassA,ClassB`，不得扩大到
+未改动模块或无关测试。若白名单命令暴露无关基线问题，立即停止扩大，记录命令、错误、
+范围和未验证项并回报主 agent；未经明确授权不得用临时 classpath、Launcher 或改配置绕过。
+
 ## 必须覆盖的评估维度
 
 按下表**逐项核查**,每项给 🟢 通过 / 🟡 有条件 / 🔴 阻塞 + 依据 / 反例 / 补充建议:
@@ -173,6 +188,9 @@
 详见 `<skill-path>/references/cross-validation.md` 的"双盲原则"。
 
 ## 硬约束
+
+所有 reviewer 还必须遵守 `<skill-path>/references/reviewer-workmode.md`，包括双盲派发、
+断流兜底、≤5 commit 和 ≤200 字标准化总结。
 
 详见 `<skill-path>/references/hard-constraints.md`。7 条铁律任一违反 = BLOCKER,必须在报告头部说明。
 

@@ -16,6 +16,8 @@ description: >
 >
 > **不是什么**:**不**用来出方案、做设计、写代码、写实施计划、做需求脑暴。这些是 `superpowers` 系列 (`brainstorming` / `writing-plans` / `test-driven-development` / `verification-before-completion`) 的事;走完那些再来这里跑评审 / 回归。
 >
+> **本次工作模式升级不新增 Coder 模式**:本 skill 仍是 review-only，Coder、Architect 和业务代码实施不在本 skill 范围内。
+>
 > **v1.10 要点**:
 > - reviewer 产出路径加 `reviewer/` 层级:`.{reviewer}/<slug>/reviewer/<YYYY-MM-DD>/`
 > - 主 agent 路径 `.claude/<slug>/<YYYY-MM-DD>/` 不变
@@ -27,7 +29,9 @@ description: >
 > - 新建 slug 时<CALENDAR_PLATFORM> PRD 自动转存为 `prd.md`
 > - 方案只保留一份最终版(不带版本号,不含 AC 评审痕迹)
 > - slug 目录范围扩展:规划文档(PRD / tech-design / coder-task / DDL)放 slug 根目录(详见 `archive-and-blind.md` 更新版 §2.5)
-> - 加固 mirror 完整性:`check-consistency.mjs` 校验全部 24 个 skill 文件在 `skills/` 与 `plugins/` 间字节一致
+> - 加固 mirror 完整性:`check-consistency.mjs` 校验全部受检 skill 文件在 `skills/` 与 `plugins/` 间字节一致
+> - reviewer 工作模式内置:`references/reviewer-workmode.md` 统一派发、验证白名单、基线债和断流兜底
+> - Java 后端条件核查:`references/java-backend-standard.md` 仅在 B2/B3/A 确认 Java 范围时加载
 >
 > **典型反例**(主 agent 不应该进本 skill 的场景):
 > - 用户说"帮我设计一下 v2 方案" → ❌ 错误地进 5 选 1;✅ 应先调 `superpowers:brainstorming` + `writing-plans`,等方案定稿再回来选 B2
@@ -47,7 +51,7 @@ description: >
 | 角色 | 谁 | 干什么 |
 |---|---|---|
 | **主 agent** | **触发 skill 的那个 agent**(claude / cursor / cline / codex / opencode 等任一) | **本 skill 范围内**:生成 prompt、与 reviewer 派发协调、N+1 份产出对比、与用户交互式逐条裁决、回归。**本 skill 范围外**(**先用 superpowers 完成再回来**):需求分析(`brainstorming`)、方案设计(`writing-plans`)、编码(`test-driven-development`)、自检(`verification-before-completion`)。注意编码独占铁律仍由主 agent 承担,但**编码动作本身不在本 skill 流程内**。 |
-| reviewer-A / B / C / ... | 例:codex / opencode / cursor / cline 等(用户在 init 时配置)| 独立评审 / 回归;数量 **默认 2,可扩展到 3-26**;N reviewer 都受 hard-constraints 约束(只读不写源码) |
+| reviewer-A / B / C / ... | 例:codex / opencode / mico / zcode / cursor / cline 等(用户在 init 时配置)| 独立评审 / 回归;数量 **默认 2,可扩展到 3-26**;N reviewer 都受 hard-constraints 约束(只读不写源码) |
 
 > **主 agent 怎么确定**:用户在哪个 agent session 里触发本 skill,那个就是主 agent。一次需求**只有一个主 agent**贯穿始终。
 >
@@ -238,6 +242,8 @@ description: >
 
 **深读** → `references/cross-validation.md`(完整流程图、双盲四种特化、Spike 兜底、§6.5 核验纪律)
        → `references/plan-review-perspectives.md`(四类方案视角差异)
+       → `references/reviewer-workmode.md`(派发、验证白名单、基线债、断流兜底)
+       → `references/java-backend-standard.md`(B2/B3/A Java 后端条件核查)
 
 ---
 
@@ -366,6 +372,7 @@ QA report saved: <path>   (BLOCKER=x HIGH=y MEDIUM=z LOW=w NOTE=n)
 - [ ] 引导用户填 `.claude/rules/auth.md` `{{}}` 占位符(项目鉴权机制)
 - [ ] 引导用户填 `.claude/rules/env-tools.md` `{{}}` 占位符(项目编译/启动工具链)
 - [ ] 在 `<repo>/CLAUDE.md` 末尾追加引用块,指向 `.claude/rules/` + 本 skill 的 references
+- [ ] reviewer 执行前读取 `references/reviewer-workmode.md`；如为 B2/B3/A 且确认 Java 后端范围,再读取 `references/java-backend-standard.md`
 
 **每次新需求时(per-task)**:
 
@@ -404,6 +411,13 @@ QA report saved: <path>   (BLOCKER=x HIGH=y MEDIUM=z LOW=w NOTE=n)
 - [ ] **A 模式预检**:若 `git diff --stat` 显示无源码改动,提示用户改选 B 模式而非 A
 - [ ] **逐条裁决**:用 `AskUserQuestion` 把每条 finding 拿出来,用户决策修 / 延后 / 不修;不批量打包
 - [ ] 中途想换模式 / 加模式(已生成 B2 prompt 后想再加 B3)→ **重新触发 skill,再 5 选 1**;不要在同一次触发里硬塞两套
+
+**工作模式与 Java 适用性补充**:
+
+- [ ] 识别 reviewer 为 `codex` / `opencode` / `mico` / `zcode` / 其它已配置 agent,保持 N 路双盲与只读硬约束
+- [ ] B2/B3/A 命中 `.java`、Maven/Gradle Java 配置、Java 包路径或明确 Java 后端描述时,按 `java-backend-standard.md` 逐条核查；无法确认则记 NOTE,不以 Java-only 规则阻塞
+- [ ] B3/A 只执行 prompt 明列的验证白名单；Maven 用 `-pl <module> -am`，测试类用逗号分隔；无关基线失败立即停止扩大并报告
+- [ ] Codex 单请求最多重试 2 次；同一子任务连续两次断流切 `zcode` 接跑；一轮最多 5 个 commit；最终摘要 ≤200 字
 
 **需求维度归档分支(v1.8 升级,任一模式叠加)** — 除非 slug=`_oneoff_`,否则必跑:
 
@@ -528,6 +542,7 @@ brainstorming(澄清需求)
 | **🆕 主 agent 自查证据嵌入 AskUserQuestion 4 要素(v1.6)** | §3(6 步表 Step 1 + Step 4)、§8(per-task checklist Step 1 + Step 4) | `cross-validation.md` §6.5 Step 1 + Step 4、§7(4 要素骨架重写) | 暂无模板;v1.7 候选评估是否需要"裁决记录文件"模板 |
 | **🆕 slug 入口 + 需求维度归档(v1.6;v1.8 升级:slug 为物理根 + <CALENDAR_PLATFORM> PRD + 方案单份 + 只记结论)** | §0(v1.8 要点)、§2(决策树 slug 分支 + <CALENDAR_PLATFORM> PRD)、§5(归档骨架完整)`、§8(需求维度归档分支完整) | `archive-and-blind.md` §0 §1 §2 §2.5;v1.8 新增 `iteration-log.md` 模板 | `templates/slug-index.md`(只记结论)、`templates/slug-summary.md`(只记结论,加 PRD 引用)、`templates/iteration-log.md`(新增) |
 | **🆕 skill 边界 = 核验环 ≠ 设计/编码环(v1.6)** | frontmatter description(NOT triggered by 段)、§0("是什么 / 不是什么" 段)、§1.1(强触发表注脚 + 排除红线 + 触发实战提示) | — | `.claude-plugin/plugin.json` description、`.claude-plugin/marketplace.json` description(顶层 + 内层 plugins[0])、`marketplace.json` 顶层 + 内层 description(**v1.6.1:5 处描述同步**) |
+| **reviewer 工作模式 + Java 后端条件核查** | §0 工作模式要点、§3 reviewer 角色、§6 硬约束、§8 per-task 适用性 | `reviewer-workmode.md` 全文、`java-backend-standard.md` 全文 | 5 份 prompt 的 workmode 引用；B2/B3/A 的 Java 适用性门；B3/A 的验证白名单段；`check-consistency.mjs` 语义断言 |
 
 **自检流程**(改完 SKILL.md 关键条款后):
 
@@ -568,7 +583,7 @@ brainstorming(澄清需求)
 
 ## 13. 版本与升级
 
-- 本 skill 版本:**1.0.0**(2026-06-26)
+- 本 skill 版本:**1.10.0**(2026-08-12)
 - references 不会被复制到项目仓 → 升级 skill 后所有项目同步获得新规则
 - 项目仓的 `<repo>/.claude/rules/auth.md` `env-tools.md` 是项目自有,不会被 skill 升级覆盖
 - 项目母板(7 份 prompt)在 `init.mjs` 跑过的项目里**需要重新拉取**才能拿到 v1.3 新增的 product / test-plan / rollout 三份评审模板。详见 `docs/changelog.md` 的 1.3.0 迁移说明
@@ -582,7 +597,7 @@ brainstorming(澄清需求)
 ### 1.9.0 新增能力
 
 - **slug 目录范围扩展**:`archive-and-blind.md` §2.5 扩展 slug 根目录可放文件类型:规划文档(PRD / 技术方案 / coder-task / DDL)放 `<slug>/` 根目录,迭代产物(review prompt / coder-result / case-studies)放 `<slug>/<YYYY-MM-DD>/`;新增文件分类规则表 + 判断口诀 + 主 agent 产物落盘流程
-- **加固 mirror 完整性**:`check-consistency.mjs` 新增全面镜像校验,覆盖全部 24 个 skill 文件(`skills/` 与 `plugins/multi-reviewer/skills/` 间字节一致),杜绝此前 19 个 reference + template 文件可能出现的静默漂移
+- **加固 mirror 完整性**:`check-consistency.mjs` 新增全面镜像校验,覆盖全部受检 skill 文件(`skills/` 与 `plugins/multi-reviewer/skills/` 间字节一致),杜绝 reference / template 文件静默漂移
 
 ### 1.8.0 新增能力
 

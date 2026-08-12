@@ -98,6 +98,7 @@
 
 - 鉴权指引:`<repo>/.claude/rules/auth.md`
   (**先按此文件跑通鉴权自检再做其他验证**;鉴权失败时不要硬跑,按排错表处理)
+- reviewer 工作模式:`<skill-path>/references/reviewer-workmode.md`
 - 文件归档规则:`<skill-path>/references/archive-and-blind.md`
 - QA 硬约束:`<skill-path>/references/hard-constraints.md`(违反任一条 = BLOCKER)
 - 报告格式:`<skill-path>/references/report-format.md`
@@ -145,6 +146,21 @@
 # 4) {{本次特有的验证命令}}
 ```
 
+## Java 后端适用性门
+
+如果改动命中 `.java` 文件、Maven `pom.xml`、Gradle Java 插件/模块、Java 源码包路径，
+或任务明确声明为 Java 后端，必须完整读取并应用
+`<skill-path>/references/java-backend-standard.md`，逐条核查本次新增/修改代码的命名、
+分层、参数、事务、异常、SQL、日志脱敏和 150 字符行宽。存量违规标为 baseline debt，
+不扩大本轮验证。无法确认适用时报告 `NOTE: Java 规范适用性未确认`，不以 Java-only 规则直接阻塞。
+
+## 验证白名单与基线债
+
+只运行本 prompt 列出的验证白名单；Maven 使用 `-pl <受影响模块> -am`，多个测试类使用
+逗号分隔的 `-Dtest=ClassA,ClassB`，禁止扩大到未改动模块、无关测试或未批准接口。白名单
+命令暴露无关基线问题时立即停止扩大，记录命令、错误证据、基线判断、影响范围和未验证项，
+等待主 agent 或用户授权后再扩大；不得用临时 classpath、Launcher、改配置或关闭鉴权绕过。
+
 ## 输出路径
 
 按 `<skill-path>/references/archive-and-blind.md` 规则,**所有 AC 产出仅主仓**(v1.8 起,不再镜像副仓):
@@ -164,6 +180,9 @@
 > 不要把 prompt 或报告镜像到副仓 — v1.8 起全部产出仅主仓。副仓不落任何 AC 产出。
 
 ## 硬约束
+
+所有 reviewer 还必须遵守 `<skill-path>/references/reviewer-workmode.md`，包括双盲派发、
+断流兜底、≤5 commit 和 ≤200 字标准化总结。
 
 见 `<skill-path>/references/hard-constraints.md`。
 

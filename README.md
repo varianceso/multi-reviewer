@@ -3,6 +3,12 @@
 > **N+1 AI agent 协同 + 多仓同步编码** 的工作协议,作为 Codex / Claude Code plugin 分发。
 > 短别名:**mrcc**。交互时可以直接说"用 mrcc 评审方案"或"用 mrcc 跑 QA 回归",也可以手动调用 `/skill mrcc`。
 
+插件内置 `references/reviewer-workmode.md`，统一 reviewer 的双盲派发、验证白名单、
+基线债阻断、Codex 断流转 zcode、mico 映射和 ≤200 字标准化总结。B2 技术方案、B3
+测试方案和 A QA 回归在确认 Java 后端范围时，自动加载 `references/java-backend-standard.md`
+核查命名、分层、事务、异常、SQL、日志和测试范围；B1/B4 与非 Java 任务不受影响。
+这次增强仍保持 review-only，不新增 Coder 入口或业务代码生成能力。
+
 **1 主实现 + N 独立评审**(默认 N=2,可配置 1-N≤26):
 
 - **主 agent**:**触发 skill 的 agent**(claude / cursor / cline / codex / opencode 等任一);**编码独占** — 写代码 / 改源码 / git 写操作 仅由主 agent 做,避免多 agent 同时编码冲突

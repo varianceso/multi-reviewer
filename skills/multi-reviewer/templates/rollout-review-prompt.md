@@ -175,6 +175,9 @@
 
 ## 硬约束
 
+共享 reviewer 工作模式(派发、双盲、归档、标准化总结、验证边界):
+`<skill-path>/references/reviewer-workmode.md`。
+
 详见 `<skill-path>/references/hard-constraints.md`。7 条铁律任一违反 = BLOCKER,必须在报告头部说明。
 
 ## 评审纪律小结(给你的最后提醒)

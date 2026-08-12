@@ -34,7 +34,9 @@ Should output no errors. Warnings about unknown frontmatter fields are usually f
 
 ## Reviewer agent setup
 
-This plugin is designed for use across multiple AI agents (Claude Code, codex, opencode, cursor, cline, etc.). Each reviewer agent runs the same prompt independently and produces a report in its own archive directory.
+This plugin is designed for use across multiple AI agents (Claude Code, codex, opencode, mico, zcode, cursor, cline, etc.). Each reviewer agent runs the same prompt independently and produces a report in its own archive directory.
+
+All reviewers follow `skills/multi-reviewer/references/reviewer-workmode.md`. When a B2/B3/A task is confirmed to target a Java backend, they also apply `references/java-backend-standard.md`; the Java standard is not copied into project `.claude/rules/`.
 
 For local testing of double-blind cross-validation:
 
@@ -52,6 +54,8 @@ When modifying any core protocol clause in `SKILL.md`:
 **Mandatory**: walk through `SKILL.md §11 Sync Matrix` line by line. Each row lists corresponding anchors in `references/` and `templates/`. If you change the protocol, you must verify all listed anchors stay in sync — not just the spot you edited.
 
 History: v1.3 round-2 self-review caught "protocol changed but reference anchors didn't follow" gaps; v1.4 introduced §11 to mechanize this check. Don't break the mechanism by skipping it on your own contribution.
+
+Changes to reviewer dispatch, validation allowlists, stream fallback, commit cadence, or Java applicability must update the two new references, affected prompt templates, the §11 sync matrix, and `check-consistency.mjs` together.
 
 ## Pull request guidelines
 
